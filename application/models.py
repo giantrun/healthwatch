@@ -1,12 +1,16 @@
 from application.app import app, db
 
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # email = db.Column(db.String(80), unique=True, nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120))
 
+class Weight(db.Model):
+    entry_id = db.Column(db.Integer, primary_key = True)
+    userid = db.Column(db.Integer,db.ForeignKey('user.id'), nullable=False)
+    e_date = db.Column(db.Date, nullable= False)
+    e_weight = db.Column(db.Float, nullable = False)
 
 # Sample for One-many and Many-Many relationship
 # class WorkItem(db.Model):
