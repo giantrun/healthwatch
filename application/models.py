@@ -1,4 +1,5 @@
 from application.app import app, db
+import datetime
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -9,7 +10,7 @@ class User(db.Model):
 class Weight(db.Model):
     entry_id = db.Column(db.Integer, primary_key = True)
     userid = db.Column(db.Integer,db.ForeignKey('user.id'), nullable=False)
-    e_date = db.Column(db.Date, nullable= False)
+    e_date = db.Column(db.Date, default = datetime.datetime.today, nullable= False)
     e_weight = db.Column(db.Float, nullable = False)
 
 # Sample for One-many and Many-Many relationship
