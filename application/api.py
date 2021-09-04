@@ -1,6 +1,7 @@
 from flask import request
 from flask.wrappers import Request
 from application.app import app
+from flask_jwt import jwt_required, JWT, current_identity
 
 # Import your models here
 from application.models import User, Weight, db
@@ -17,6 +18,25 @@ def home():
 # List weight for a date range - /weight
 # Logout - user/logout
 
+
+
+
+def identity(payload):
+    user_id = payload['identity']
+    return User.query.filter_by(id=user_id).first()
+
+def authenticate(username, password):
+    user = User.query.filter_by(username=username).first()
+    if user and user.password == password:
+        return user
+
+jwt = JWT(app, authenticate, identity)
+
+@app.route("/hello")
+@jwt_required()
+def hello_world():
+    return {"Status": "Success", "result": f"Hello {current_identity.username}"}
+
 # 1. List all users
 @app.route("/user")
 def list_user():
@@ -26,7 +46,7 @@ def list_user():
     for user in users:
         results.append({
             "User id": user.id,
-            "user nam,e": user.username
+            "user name": user.username
         })
     return {"Status": "Success", "data": results}, 200
 

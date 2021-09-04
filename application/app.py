@@ -13,8 +13,12 @@ db_url = db_url.replace('postgres', 'postgresql', 1)
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+# JWT authentication code block
 app.config['SECRET_KEY'] = 'super-secret'
 app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=3000)
+
 db = SQLAlchemy(app)
+
 
 from application.api import *
